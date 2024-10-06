@@ -7,6 +7,9 @@ from Crypto.Hash import SHA256, HMAC
 from Crypto.PublicKey import RSA
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
+from generate_keys import generate_rsa_keys
+
+generate_rsa_keys()
 
 app = Flask(__name__)
 
