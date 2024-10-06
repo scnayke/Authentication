@@ -43,6 +43,7 @@ jobs:
 
     - name: Run entrypoint
       run: |
+        chmod +x run.sh
         ./run.sh
   
     - name: Setup Flutter ${{ env.FLUTTER_VERSION }}
