@@ -1,9 +1,9 @@
-name: Deploy Flask Application
+name: Build Flask Application
 
 on:
   push:
     branches:
-      - main  # Trigger action on push to the "main" branch
+      - main
 
 jobs:
   build:
@@ -24,13 +24,16 @@ jobs:
           pip install -r requirements.txt
           python3 generate_keys.py
 
-      - name: Run Flask Application
+      - name: Run Flask Application in Background
         run: |
-          export FLASK_APP=app.py
-          python3 app.py  # Run the Flask app
+          nohup python3 app.py &  # Start Flask server in the background
+
+      - name: Verify Server is Running (Optional)
+        run: |
+          curl http://127.0.0.1:5000  # Make an HTTP request to the Flask server
 
   deploy:
-    needs: build  # wait for the "build" job to finish before deploying
+    needs: build
 
     runs-on: ubuntu-latest
 
@@ -47,7 +50,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Deploy to GitHub Pages 🚀
-        if: github.event_name == 'push'  # deploy only on push
+        if: github.event_name == 'push'
         id: deployment
         uses: actions/deploy-pages@v4.0.5
         with:
